@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Проездной</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎫</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="screen-track" class="screen active">
+            <div class="header">
+                <h1>📊 Учёт поездок</h1>
+                <div class="header-buttons">
+                    <button id="btn-theme" class="btn-theme">🌙</button>
+                    <button id="btn-setup" class="btn-link" onclick="if(confirm('Настройка проездного сбросит текущие данные о поездках. Продолжить?'))location.href='setup.html'">Настроить</button>
+                </div>
+            </div>
+
+            <div id="pass-expired-banner" class="banner hidden">
+                Проездной истёк!
+            </div>
+
+            <div id="pass-info" class="pass-info-line">
+                <span id="pass-info-text"></span>
+            </div>
+
+            <div class="card days-card">
+                <div class="days-info">
+                    <span id="days-passed">0</span> / <span id="days-total">0</span> дней
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div id="days-remaining" class="days-remaining"></div>
+            </div>
+
+            <div id="trips-card" class="card trips-card">
+                <div class="trips-today">
+                    <span>Поездок за сегодня: <strong id="today-trips">0</strong></span>
+                    <button id="btn-undo" class="btn-undo-inline hidden" onclick="if(confirm('Отменить последнюю поездку?'))this.dispatchEvent(new Event('undo'))">✖️</button>
+                </div>
+                <div class="trips-buttons">
+                    <button id="btn-plus-ground" class="btn-trip-add" data-trip-type="ground">
+                        🚌 Наземный <span class="btn-trip-plus">+</span>
+                    </button>
+                    <button id="btn-plus-metro" class="btn-trip-add" data-trip-type="metro">
+                        🚇 Метро <span class="btn-trip-plus">+</span>
+                    </button>
+                </div>
+                <div class="trips-total">
+                    Всего: <strong id="total-trips">0</strong>
+                    <span id="total-breakdown" class="total-breakdown"></span>
+                </div>
+            </div>
+
+            <div class="card calc-card">
+                <div class="calc-row">
+                    <span>Стоимость проездного</span>
+                    <span id="calc-pass-price">0 BYN</span>
+                </div>
+                <div class="calc-row">
+                    <span>По розничным</span>
+                    <span id="calc-retail-price">0 BYN</span>
+                </div>
+                <div class="calc-row result">
+                    <span id="calc-result-label">Экономия</span>
+                    <span id="calc-result-value">0 BYN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
