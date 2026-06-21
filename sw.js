@@ -1,8 +1,9 @@
-const CACHE_NAME = 'transit-pass-v2';
+const CACHE_NAME = 'transit-pass-v3';
 const ASSETS = [
     './',
     './index.html',
     './setup.html',
+    './help.html',
     './style.css',
     './app.js',
     './setup.js',

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Справка</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .help-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .help-card h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--blue);
+        }
+        .help-card p, .help-card li {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .help-card ul {
+            padding-left: 20px;
+            margin-top: 6px;
+        }
+        .help-card li {
+            margin-bottom: 4px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 16px;
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="screen active">
+            <a href="index.html" class="back-link">← Назад</a>
+            <h1>ℹ️ Справка</h1>
+
+            <div class="help-card">
+                <h3>Зачем это приложение?</h3>
+                <p>Проездной — PWA-приложение, которое помогает понять, выгодна ли покупка проездного на общественный транспорт. Достаточно записывать каждую поездку, и приложение рассчитает, сэкономили вы или переплатили по сравнению с разовыми билетами.</p>
+            </div>
+
+            <div class="help-card">
+                <h3>Как пользоваться?</h3>
+                <ul>
+                    <li>Настройте проездной: тип, срок, стоимость и цену поездки</li>
+                    <li>Каждый раз, когда едете на транспорте, нажимайте кнопку 🚌 или 🟣</li>
+                    <li>Приложение покажет, выгоднее ли проездной или нет</li>
+                </ul>
+            </div>
+
+            <div class="help-card">
+                <h3>Типы проездных</h3>
+                <ul>
+                    <li><strong>Общий</strong> — действует на наземный транспорт и метро. Учёт ведётся раздельно</li>
+                    <li><strong>🚌 Наземный</strong> — автобусы, троллейбусы, трамваи</li>
+                    <li><strong>🚇 Метро</strong></li>
+                </ul>
+            </div>
+
+            <div class="help-card">
+                <h3>Как считается выгода?</h3>
+                <p><strong>Экономия</strong> = (поездки × цена за поездку) − стоимость проездного</p>
+                <p>Если результат положительный — вы сэкономили. Если отрицательный — переплатили.</p>
+            </div>
+
+            <div class="help-card">
+                <h3>Особенности</h3>
+                <ul>
+                    <li>Данные хранятся локально на устройстве</li>
+                    <li>Работает офлайн (установите как PWA)</li>
+                    <li>Кнопка ✖️ отменяет последнюю поездку</li>
+                    <li>Тёмная и светлая темы</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const THEME_KEY = 'transit_theme';
+            const saved = localStorage.getItem(THEME_KEY) || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
+    </script>
+</body>
+</html>
