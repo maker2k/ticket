@@ -106,6 +106,50 @@
         els.btnStart.addEventListener('click', startPass);
     }
 
+    function startPass() {
+        const startDate = els.startDate.value;
+        const isUniversal = selectedType === 'universal';
+        const price = parseFloat(isUniversal ? els.passPriceUniversal.value : els.passPriceSingle.value);
+        const tripPrice = parseFloat(els.tripPrice.value);
+
+        if (!startDate) {
+            alert('Выберите дату начала');
+            return;
+        }
+        if (!price || price <= 0) {
+            alert('Введите стоимость проездного');
+            return;
+        }
+        if (!tripPrice || tripPrice <= 0) {
+            alert('Введите цену за поездку');
+            return;
+        }
+
+        const data = {
+            pass: {
+                startDate: startDate,
+                duration: selectedDays,
+                price: price,
+                type: selectedType,
+                active: true,
+            },
+            trips: {},
+            log: [],
+            config: {
+                pricePerTrip: tripPrice,
+            },
+        };
+        saveData(data);
+        saveDefaults({
+            universalPrice: isUniversal ? price : (loadDefaults().universalPrice || ''),
+            singlePrice: isUniversal ? (loadDefaults().singlePrice || '') : price,
+            tripPrice: tripPrice,
+            type: selectedType,
+            duration: selectedDays,
+        });
+        window.location.href = 'index.html';
+    }
+
     function initTheme() {
         const saved = localStorage.getItem(THEME_KEY) || 'light';
         applyTheme(saved);
