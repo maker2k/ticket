@@ -558,3 +558,23 @@ h1 {
     color: var(--text-secondary);
     font-size: 0.8rem;
 }
+
+.plan-section {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.plan-section:last-child {
+    border-bottom: none;
+}
+
+.plan-section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.plan-current .plan-section-title {
+    color: var(--blue);
+}

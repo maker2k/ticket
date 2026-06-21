@@ -169,18 +169,35 @@
             results.push({ date: new Date(d), unprofitable });
         }
         results.sort((a, b) => a.unprofitable - b.unprofitable || a.date - b.date);
-        return results.slice(0, 3);
+        const seen = new Set();
+        const unique = [];
+        for (const item of results) {
+            if (!seen.has(item.unprofitable)) {
+                seen.add(item.unprofitable);
+                unique.push(item);
+            }
+            if (unique.length >= 3) break;
+        }
+        return unique;
     }
 
     function updatePlan() {
-        const dates = findBestDates(selectedDays);
+        const durations = [10, 20, 30];
         const container = document.getElementById('plan-dates');
-        container.innerHTML = dates.map((item, i) => {
-            const label = i === 0 ? 'Лучше всего' : i === 1 ? 'Хороший вариант' : 'Тоже неплохо';
-            return `<div class="plan-row">
-                <span class="plan-label">${label}</span>
-                <span class="plan-date">${formatDateShort(item.date)}</span>
-                <span class="plan-count">${item.unprofitable} ${item.unprofitable === 1 ? 'выходной' : item.unprofitable < 5 ? 'выходных' : 'выходных'} (праздн.)</span>
+        container.innerHTML = durations.map(dur => {
+            const isCurrent = dur === selectedDays;
+            const dates = findBestDates(dur);
+            const rows = dates.map((item, i) => {
+                const label = i === 0 ? 'Лучше всего' : i === 1 ? 'Хороший вариант' : 'Тоже неплохо';
+                return `<div class="plan-row">
+                    <span class="plan-label">${label}</span>
+                    <span class="plan-date">${formatDateShort(item.date)}</span>
+                    <span class="plan-count">${item.unprofitable} ${item.unprofitable === 1 ? 'выходной' : item.unprofitable < 5 ? 'выходных' : 'выходных'} (праздн.)</span>
+                </div>`;
+            }).join('');
+            return `<div class="plan-section${isCurrent ? ' plan-current' : ''}">
+                <div class="plan-section-title">${dur} дней${isCurrent ? ' ★' : ''}</div>
+                ${rows}
             </div>`;
         }).join('');
     }
