@@ -40,15 +40,27 @@
                     <button class="duration-btn" data-days="30">30 дней</button>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Стоимость проездного (BYN)</label>
-                <input type="number" id="pass-price" placeholder="Например, 2500 BYN" min="0.01" step="0.01">
+            <div class="form-group" id="price-universal">
+                <label>Стоимость общего проездного (BYN)</label>
+                <input type="number" id="pass-price-universal" placeholder="Например, 2500 BYN" min="0.01" step="0.01">
+            </div>
+            <div class="form-group hidden" id="price-single">
+                <label>Стоимость проездного на один вид транспорта (BYN)</label>
+                <input type="number" id="pass-price-single" placeholder="Например, 1800 BYN" min="0.01" step="0.01">
             </div>
             <div class="form-group">
                 <label>Цена за одну поездку (BYN)</label>
                 <input type="number" id="trip-price" placeholder="Например, 46 BYN" min="0.01" step="0.01">
             </div>
             <button id="btn-start" class="btn-primary">Начать</button>
+
+            <div class="card calc-card" id="plan-card">
+                <div class="calc-summary" id="plan-header">
+                    <span>📅 Когда покупать?</span>
+                    <span class="calc-expand">▾</span>
+                </div>
+                <div class="calc-details hidden" id="plan-dates"></div>
+            </div>
         </div>
     </div>
     <script src="setup.js"></script>

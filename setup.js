@@ -5,7 +5,10 @@
 
     const els = {
         startDate: document.getElementById('start-date'),
-        passPrice: document.getElementById('pass-price'),
+        passPriceUniversal: document.getElementById('pass-price-universal'),
+        passPriceSingle: document.getElementById('pass-price-single'),
+        priceUniversal: document.getElementById('price-universal'),
+        priceSingle: document.getElementById('price-single'),
         tripPrice: document.getElementById('trip-price'),
         btnStart: document.getElementById('btn-start'),
     };
@@ -33,8 +36,8 @@
         }
     }
 
-    function saveDefaults(price, tripPrice, type, duration) {
-        localStorage.setItem(DEFAULTS_KEY, JSON.stringify({ price, tripPrice, type, duration }));
+    function saveDefaults(data) {
+        localStorage.setItem(DEFAULTS_KEY, JSON.stringify(data));
     }
 
     function today() {
@@ -49,7 +52,6 @@
         initTheme();
 
         const defaults = loadDefaults();
-        if (defaults.price) els.passPrice.value = defaults.price;
         if (defaults.tripPrice) els.tripPrice.value = defaults.tripPrice;
         if (defaults.type) {
             selectedType = defaults.type;
@@ -64,15 +66,35 @@
             });
         }
 
+        updatePriceFields();
         bindEvents();
+        updatePlan();
+    }
+
+    function updatePriceFields() {
+        const isUniversal = selectedType === 'universal';
+        els.priceUniversal.classList.toggle('hidden', !isUniversal);
+        els.priceSingle.classList.toggle('hidden', isUniversal);
+
+        const defaults = loadDefaults();
+        if (isUniversal) {
+            if (defaults.universalPrice) els.passPriceUniversal.value = defaults.universalPrice;
+        } else {
+            if (defaults.singlePrice) els.passPriceSingle.value = defaults.singlePrice;
+        }
     }
 
     function bindEvents() {
+        document.getElementById('plan-header').addEventListener('click', () => {
+            document.getElementById('plan-dates').classList.toggle('hidden');
+        });
+
         document.querySelectorAll('.type-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
                 selectedType = btn.dataset.type;
+                updatePriceFields();
             });
         });
 
@@ -81,6 +103,7 @@
                 document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
                 selectedDays = parseInt(btn.dataset.days);
+                updatePlan();
             });
         });
 
@@ -105,41 +128,65 @@
         applyTheme(next);
     }
 
-    function startPass() {
-        const startDate = els.startDate.value;
-        const price = parseFloat(els.passPrice.value);
-        const tripPrice = parseFloat(els.tripPrice.value);
+    function getHolidays(year) {
+        const holidays = [
+            `${year}-01-01`, `${year}-01-02`, `${year}-01-03`,
+            `${year}-01-07`,
+            `${year}-03-08`,
+            `${year}-05-01`,
+            `${year}-05-09`,
+            `${year}-07-03`,
+            `${year}-11-02`,
+            `${year}-12-25`,
+        ];
+        return new Set(holidays);
+    }
 
-        if (!startDate) {
-            alert('Выберите дату начала');
-            return;
-        }
-        if (!price || price <= 0) {
-            alert('Введите стоимость проездного');
-            return;
-        }
-        if (!tripPrice || tripPrice <= 0) {
-            alert('Введите цену за поездку');
-            return;
-        }
+    function formatDateShort(d) {
+        return d.toLocaleDateString('ru-RU', { day: 'numeric', month: '2-digit', year: 'numeric' });
+    }
 
-        const data = {
-            pass: {
-                startDate: startDate,
-                duration: selectedDays,
-                price: price,
-                type: selectedType,
-                active: true,
-            },
-            trips: {},
-            log: [],
-            config: {
-                pricePerTrip: tripPrice,
-            },
-        };
-        saveData(data);
-        saveDefaults(price, tripPrice, selectedType, selectedDays);
-        window.location.href = 'index.html';
+    function countUnprofitableDays(startDate, duration) {
+        const holidays2026 = getHolidays(2026);
+        let count = 0;
+        for (let i = 0; i < duration; i++) {
+            const d = new Date(startDate);
+            d.setDate(d.getDate() + i);
+            const dow = d.getDay();
+            const dateStr = d.getFullYear() + '-' +
+                String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                String(d.getDate()).padStart(2, '0');
+            if (dow === 0 || dow === 6 || holidays2026.has(dateStr)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    function findBestDates(duration) {
+        const results = [];
+        const todayDate = new Date();
+        for (let offset = 1; offset <= 30; offset++) {
+            const d = new Date(todayDate);
+            d.setDate(d.getDate() + offset);
+            const unprofitable = countUnprofitableDays(d, duration);
+            results.push({ date: new Date(d), unprofitable });
+        }
+        results.sort((a, b) => a.unprofitable - b.unprofitable || a.date - b.date);
+        return results.slice(0, 3);
+    }
+
+    function updatePlan() {
+        const dates = findBestDates(selectedDays);
+        const container = document.getElementById('plan-dates');
+        container.innerHTML = dates.map((item, i) => {
+            const label = i === 0 ? 'Лучше всего' : i === 1 ? 'Хороший вариант' : 'Тоже неплохо';
+            return `<div class="plan-row">
+                <span class="plan-label">${label}</span>
+                <span class="plan-date">${formatDateShort(item.date)}</span>
+                <span class="plan-count">${item.unprofitable} ${item.unprofitable === 1 ? 'выходной' : item.unprofitable < 5 ? 'выходных' : 'выходных'} (праздн.)</span>
+            </div>`;
+        }).join('');
     }
 
     init();
