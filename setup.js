@@ -85,10 +85,6 @@
     }
 
     function bindEvents() {
-        document.getElementById('plan-header').addEventListener('click', () => {
-            document.getElementById('plan-dates').classList.toggle('hidden');
-        });
-
         document.querySelectorAll('.type-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));

@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.hidden {
+    display: none !important;
+}
+
 :root {
     --blue: #2563eb;
     --green: #16a34a;
