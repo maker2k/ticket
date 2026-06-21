@@ -177,7 +177,7 @@
                 seen.add(item.unprofitable);
                 unique.push(item);
             }
-            if (unique.length >= 3) break;
+            if (unique.length >= 2) break;
         }
         return unique;
     }
@@ -189,7 +189,7 @@
             const isCurrent = dur === selectedDays;
             const dates = findBestDates(dur);
             const rows = dates.map((item, i) => {
-                const label = i === 0 ? 'Лучше всего' : i === 1 ? 'Хороший вариант' : 'Тоже неплохо';
+                const label = i === 0 ? 'Лучше всего' : 'Хороший вариант';
                 return `<div class="plan-row">
                     <span class="plan-label">${label}</span>
                     <span class="plan-date">${formatDateShort(item.date)}</span>
