@@ -48,6 +48,7 @@
     }
 
     function init() {
+        bindEvents();
         els.startDate.value = today();
         initTheme();
 
@@ -67,7 +68,6 @@
         }
 
         updatePriceFields();
-        bindEvents();
         updatePlan();
     }
 
