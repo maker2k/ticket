@@ -484,3 +484,8 @@ h1 {
     font-size: 0.85rem;
     padding: 12px 0;
 }
+
+.ad-block {
+    margin-top: 16px;
+    text-align: center;
+}

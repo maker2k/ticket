@@ -21,7 +21,7 @@
                 <div class="header-buttons">
                     <button id="btn-theme" class="btn-theme">🌙</button>
                     <a href="help.html" class="btn-link">Справка</a>
-                    <button id="btn-setup" class="btn-link" onclick="if(confirm('Настройка проездного сбросит текущие данные о поездках. Продолжить?'))location.href='setup.html'">Настроить</button>
+                    <a href="setup.html" class="btn-link" onclick="return confirm('Настройка проездного сбросит текущие данные о поездках. Продолжить?')">Настроить</a>
                 </div>
             </div>
 
@@ -76,8 +76,23 @@
                     <span id="calc-result-value">0 BYN</span>
                 </div>
             </div>
+
+            <div class="ad-block">
+                <div id="yandex_rtb_R-A-19479210-1"></div>
+            </div>
         </div>
     </div>
+    <script>window.yaContextCb=window.yaContextCb||[]</script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>
+    <script>
+        window.yaContextCb.push(() => {
+            Ya.Context.AdvManager.render({
+                "blockId": "R-A-19479210-1",
+                "renderTo": "yandex_rtb_R-A-19479210-1",
+                "type": "feed"
+            })
+        })
+    </script>
     <script src="app.js"></script>
 </body>
 </html>
