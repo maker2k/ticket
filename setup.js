@@ -162,7 +162,8 @@
     function findBestDates(duration) {
         const results = [];
         const todayDate = new Date();
-        for (let offset = 1; offset <= 30; offset++) {
+        const maxOffset = Math.min(duration, 14);
+        for (let offset = 1; offset <= maxOffset; offset++) {
             const d = new Date(todayDate);
             d.setDate(d.getDate() + offset);
             const unprofitable = countUnprofitableDays(d, duration);
