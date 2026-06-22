@@ -1,4 +1,4 @@
-const CACHE_NAME = 'transit-pass-v8';
+const CACHE_NAME = 'transit-pass-v9';
 const ASSETS = [
     './',
     './index.html',
@@ -20,26 +20,20 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
     e.waitUntil(
         caches.keys().then(keys =>
-            Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+            Promise.all(keys.map(k => caches.delete(k)))
         )
     );
     self.clients.claim();
 });
 
 self.addEventListener('fetch', (e) => {
-    if (e.request.url.includes('sw.js') || e.request.url.includes('.html') || e.request.url.endsWith('/')) {
-        e.respondWith(
-            fetch(e.request).then(response => {
-                if (!e.request.url.includes('sw.js')) {
-                    const clone = response.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-                }
-                return response;
-            }).catch(() => caches.match(e.request))
-        );
-    } else {
-        e.respondWith(
-            caches.match(e.request).then(cached => cached || fetch(e.request))
-        );
-    }
+    e.respondWith(
+        fetch(e.request).then(response => {
+            if (e.request.method === 'GET' && !e.request.url.includes('googletagmanager') && !e.request.url.includes('yandex.ru')) {
+                const clone = response.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+            }
+            return response;
+        }).catch(() => caches.match(e.request))
+    );
 });
