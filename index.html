@@ -93,15 +93,17 @@
     </div>
     <script>window.yaContextCb=window.yaContextCb||[]</script>
     <script src="https://yandex.ru/ads/system/context.js" async></script>
-    <script>
-        window.yaContextCb.push(() => {
-            Ya.Context.AdvManager.render({
-                "blockId": "R-A-19479210-1",
-                "renderTo": "yandex_rtb_R-A-19479210-1",
-                "type": "feed"
-            })
-        })
-    </script>
     <script src="app.js?v=9"></script>
+    <script>
+        window.yaContextCb.push(function() {
+            try {
+                Ya.Context.AdvManager.render({
+                    "blockId": "R-A-19479210-1",
+                    "renderTo": "yandex_rtb_R-A-19479210-1",
+                    "type": "feed"
+                });
+            } catch(e) {}
+        });
+    </script>
 </body>
 </html>
