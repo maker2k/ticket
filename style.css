@@ -439,6 +439,13 @@ h1 {
     color: var(--gray);
 }
 
+.calc-detail {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
 .calc-summary {
     display: flex;
     justify-content: space-between;

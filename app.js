@@ -17,6 +17,7 @@
         calcRetailPrice: document.getElementById('calc-retail-price'),
         calcResultLabel: document.getElementById('calc-result-label'),
         calcResultValue: document.getElementById('calc-result-value'),
+        calcDetail: document.getElementById('calc-detail'),
         btnUndo: document.getElementById('btn-undo'),
         passInfoText: document.getElementById('pass-info-text'),
     };
@@ -250,8 +251,9 @@
         const retailCost = totals.total * data.config.pricePerTrip;
         const diff = retailCost - passCost;
 
-        els.calcPassPrice.textContent = formatMoney(passCost);
-        els.calcRetailPrice.textContent = formatMoney(retailCost);
+        const passStr = formatMoney(passCost);
+        const retailStr = formatMoney(retailCost);
+        els.calcDetail.textContent = `(${passStr} / ${retailStr})`;
 
         if (diff > 0) {
             els.calcResultLabel.textContent = 'Экономия';
