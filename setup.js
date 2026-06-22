@@ -207,7 +207,7 @@
         const results = [];
         const todayDate = new Date();
         const maxOffset = Math.min(duration, 14);
-        for (let offset = 1; offset <= maxOffset; offset++) {
+        for (let offset = 0; offset <= maxOffset; offset++) {
             const d = new Date(todayDate);
             d.setDate(d.getDate() + offset);
             const unprofitable = countUnprofitableDays(d, duration);
