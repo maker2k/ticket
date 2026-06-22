@@ -1,4 +1,4 @@
-const CACHE_NAME = 'transit-pass-v7';
+const CACHE_NAME = 'transit-pass-v8';
 const ASSETS = [
     './',
     './index.html',
@@ -27,11 +27,13 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-    if (e.request.url.endsWith('.html') || e.request.url.endsWith('/')) {
+    if (e.request.url.includes('sw.js') || e.request.url.includes('.html') || e.request.url.endsWith('/')) {
         e.respondWith(
             fetch(e.request).then(response => {
-                const clone = response.clone();
-                caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+                if (!e.request.url.includes('sw.js')) {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+                }
                 return response;
             }).catch(() => caches.match(e.request))
         );
